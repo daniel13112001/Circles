@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: circles
+      POSTGRES_USER: circles
+      POSTGRES_PASSWORD: circles
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U circles"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgres://circles:circles@db:5432/circles
+      PORT: 8080
+      FIREBASE_PROJECT_ID: ${FIREBASE_PROJECT_ID}
+      FIREBASE_SERVICE_ACCOUNT_FILE: /run/secrets/firebase_sa
+    secrets:
+      - firebase_sa
+    depends_on:
+      db:
+        condition: service_healthy
+
+secrets:
+  firebase_sa:
+    file: ./secrets/circles-ac313-firebase-adminsdk-fbsvc-70cc7ceb14.json
+
+volumes:
+  postgres_data:
