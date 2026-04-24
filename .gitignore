@@ -34,7 +34,8 @@ backend/secrets/
 # Editor/IDE
 # .idea/
 # .vscode/
+*DS_Store*
 
-claude
+
 backend/.env
 circles-ac313-firebase-adminsdk-fbsvc-70cc7ceb14.json
