@@ -7,9 +7,12 @@ Ordered list of implementation milestones. Work top-to-bottom.
 ## Phase 1 — Project Skeleton ✅
 - [x] `go mod init` — `github.com/danielyakubu/circles`
 - [x] Directory structure: `backend/cmd/api`, `backend/internal/`, `backend/internal/db/migrations/`
-- [x] `docker-compose.yml` — Postgres + API services
+- [x] `backend/docker-compose.yml` — Postgres + API services (backend-only)
+- [x] `docker-compose.yml` (root) — primary entry point for all contributors
 - [x] `Dockerfile` — multi-stage Go build
-- [x] `.env.example` — DB_URL, FIREBASE_PROJECT_ID, PORT
+- [x] `.env.example` (root) — only FIREBASE_PROJECT_ID needed for Docker
+- [x] `backend/.env.example` — full env vars for local Go development
+- [x] `README.md` (root) — quickstart for UI contributors
 - [x] `cmd/api/main.go` — HTTP server bootstrap (chi router, graceful shutdown)
 - [x] `internal/db/db.go` — pgxpool setup, simple query protocol (Supabase pooler compat)
 - [x] `client/` folder scaffolded

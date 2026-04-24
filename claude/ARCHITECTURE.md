@@ -13,6 +13,9 @@
 
 ```
 Circles/                        # Repo root
+├── docker-compose.yml          # Primary entry point — starts Postgres + API
+├── .env.example                # Only FIREBASE_PROJECT_ID needed for Docker
+├── README.md                   # Quickstart for UI contributors
 ├── backend/                    # Go API
 │   ├── cmd/api/main.go         # Entry point, wires everything together
 │   ├── internal/
@@ -27,9 +30,9 @@ Circles/                        # Repo root
 │   │       ├── migrate.go      # Migration runner (embed.FS)
 │   │       └── migrations/     # SQL files embedded into binary at compile time
 │   ├── secrets/                # Service account keys — gitignored
-│   ├── docker-compose.yml
+│   ├── docker-compose.yml      # Backend-only alternative (uses local Postgres)
 │   ├── Dockerfile
-│   └── .env.example
+│   └── .env.example            # Full env vars for local Go development
 ├── client/                     # Mobile/web frontend (TBD)
 ├── claude/                     # Design docs & session reference
 └── docs/                       # Spec, whitepaper
@@ -197,4 +200,4 @@ All endpoints require `Authorization: Bearer <firebase_jwt>`.
 - **UUIDs for all PKs:** avoids enumeration attacks.
 - **pgx/v5 with pgxpool:** connection pooling, no ORM.
 - **chi router:** lightweight, middleware-friendly, idiomatic.
-- **Migrations via golang-migrate or hand-rolled:** sequential SQL files in `/migrations`.
+- **Migrations via hand-rolled embed.FS runner:** SQL files are embedded into the binary at compile time; the runner tracks applied files in a `schema_migrations` table and runs on startup. No external tool needed.
